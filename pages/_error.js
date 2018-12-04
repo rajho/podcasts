@@ -25,7 +25,7 @@ export default class Error extends React.Component {
           : 
           <div className="message">
             <h1>Hubo un problema :(</h1>
-            <p>Intenta nuevament en unos segundos</p>
+            <p>Intenta nuevamente en unos segundos</p>
           </div>
         }
 

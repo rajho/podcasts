@@ -18,7 +18,7 @@ class ChannelGrid extends Component {
                   prefetch 
                   key={channel.id}>
               <a className="channel">
-                <img src={ channel.urls.logo_image.original } alt=""/>
+                <img src={ channel.urls.logo_image.original } alt="channel logo"/>
                 <h2>{ channel.title }</h2>
               </a>
             </Link>

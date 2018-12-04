@@ -2,6 +2,7 @@ import Layout from '../components/Layout';
 import LatestPodcastsWithClick from '../components/LatestPodcastsWithClick';
 import SeriesGrid from '../components/SeriesGrid';
 import Error from './_error';
+import PodcastPlayer from '../components/PodcastPlayer';
 
 export default class extends React.Component {
 
@@ -13,7 +14,7 @@ export default class extends React.Component {
   }
 
   static async getInitialProps({query, res}){
-    let idChannel = query.idChannel
+    let idChannel = query.id
 
     try{
       let  [reqChannel, reqSeries, reqAudios] = await Promise.all([
@@ -39,7 +40,7 @@ export default class extends React.Component {
       
       return { channel , audioClips, series, statusCode: 200 }
     } catch(e) {
-      res.statusCode = 503
+      // res.statusCode = 503
       return { channel: null, audioClips: null, series: null, statusCode: 503}
     }
   }
@@ -48,6 +49,13 @@ export default class extends React.Component {
     event.preventDefault()
     this.setState({
       openPodcast: podcast
+    })
+  }
+
+  closePodcast = (event) => {
+    event.preventDefault()
+    this.setState({
+      openPodcast: null
     })
   }
 
@@ -64,7 +72,11 @@ export default class extends React.Component {
 
         <div className="banner" style={{ backgroundImage: `url(${channel.urls.banner_image.original})` }} />
 
-        { openPodcast && <div>Hay un podcast abierto</div> }
+        { openPodcast && 
+          <div className="modal">
+            <PodcastPlayer clip={ openPodcast } onClose={ this.closePodcast }/>
+          </div> 
+        }
         <h1>{ channel.title }</h1>
 
         <SeriesGrid series={series} />
@@ -79,12 +91,19 @@ export default class extends React.Component {
           background-position: 50% 50%;
           background-size: cover;
           background-color: #aaa;
-        }
-        
+        }      
         h1 {
           font-weight: 600;
           padding: 15px;
-        }        
+        }
+        .modal {
+          position: fixed;
+          top: 0;
+          left: 0;
+          right: 0;
+          bottom: 0;
+          z-index: 99999;
+        }
         `}
         </style>       
       </Layout>
